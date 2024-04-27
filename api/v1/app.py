@@ -1,4 +1,4 @@
-#!/usr/bin/phyton3
+#!/usr/bin/python3
 """An API"""
 from flask import Flask, Blueprint, render_template
 from models import storage
