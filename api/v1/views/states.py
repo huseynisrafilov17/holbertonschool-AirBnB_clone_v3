@@ -44,7 +44,7 @@ def state_add():
     data = request.get_json()
     if "name" not in data.keys():
         abort(400, 'Missing name')
-    new_state = State(data)
+    new_state = State()
     for key, value in data.items():
         if key not in ["id", "created_at", "updated_at"]:
             setattr(new_state, key, value)
