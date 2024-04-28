@@ -40,7 +40,7 @@ def add_place(city_id):
         abort(404)
     new_place = Place()
     for key, value in data.items():
-        setattr(place, key, value)
+        setattr(new_place, key, value)
     storage.new(new_place)
     storage.save()
     return jsonify(new_place.to_dict()), 201
