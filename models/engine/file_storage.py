@@ -36,8 +36,8 @@ class FileStorage:
 
     def get(self, cls, id):
         """Gets an object with a given id"""
-        class_name = cls.__name__
-        obj = self.__objects.get(f"{class_name}.{id}")
+        c_n = cls.__name__
+        obj = self.__objects.get(f"{c_n}.{id}")
         return obj
 
     def count(self, cls=None):
@@ -69,7 +69,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except ValueError:
+        except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
