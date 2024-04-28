@@ -31,7 +31,8 @@ def state_delete(state_id):
     if len(state) == 0:
         abort(404)
     else:
-        storage.delete(state[0])
+        state[0].delete()
+        storage.save()
         return jsonify({}), 200
 
 
@@ -43,6 +44,7 @@ def state_add():
     if "name" not in data.keys():
         abort(400, 'Missing name')
     new_state = State(data)
+    storage.save()
     return jsonify(new_state.to_dict()), 201
 
 
@@ -59,4 +61,5 @@ def state_update(state_id):
         for key, value in data.items():
             if key not in ["id", "created_at", "updated_at"]:
                 state[0].setattr(key, value)
+        storage.save()
         return jsonify(state[0].to_dict()), 200
