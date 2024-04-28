@@ -71,7 +71,7 @@ def review_add(place_id):
 @app_views.route("/reviews/<review_id>", methods=["PUT"], strict_slashes=False)
 def review_update(review_id):
     reviews = storage.all("Review").values()
-    reviews = list(filter(lambda x: x.id == review_id, reviews))
+    review = list(filter(lambda x: x.id == review_id, reviews))
     if len(review) == 0:
         abort(404)
     else:
