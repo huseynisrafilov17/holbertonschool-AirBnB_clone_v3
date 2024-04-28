@@ -32,7 +32,7 @@ def get_places_by_city(city_id):
         if 'name' not in data:
             abort(400, 'Missing name')
         user = storage.get(User, data['user_id'])
-        if not user:
+        if user is None:
             abort(404)
         data['city_id'] = city_id
         new_place = Place(**data)
