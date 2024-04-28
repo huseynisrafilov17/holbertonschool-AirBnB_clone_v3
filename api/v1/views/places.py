@@ -6,41 +6,44 @@ Defines API endpoints for Place objects.
 from flask import Flask, jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
-from models.city import City
 from models.place import Place
-from models.user import User
 
 
-@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'])
+@app_views.route('/cities/<city_id>/places', strict_slashes=False)
 def get_places_by_city(city_id):
     """Retrieves the list of all Place objects of a City"""
-    if request.method == 'GET':
-        city = storage.get(City, city_id)
-        if not city:
-            abort(404)
-        places = [place.to_dict() for place in city.places]
-        return jsonify(places)
-    elif request.method == 'POST':
-        cities = storage.all("City").values()
-        city = list(filter(lambda x: x.id == city_id, cities))
-        if len(city) == 0:
-            abort(404)
-        if not request.is_json:
-            abort(400, 'Not a JSON')
-        data = request.get_json()
-        if 'user_id' not in data:
-            abort(400, 'Missing user_id')
-        if 'name' not in data:
-            abort(400, 'Missing name')
-        users = storage.all("User").values()
-        user = list(filter(lambda x: x.id == user_id, users))
-        if len(user) == 0:
-            abort(404)
-        new_place = Place()
-        for key, value in data.items():
-            setattr(place, key, value)
-        new_place.save()
-        return jsonify(new_place.to_dict()), 201
+    cities = storage.all("City").values()
+    city = list(filter(lambda x: x.id == city_id, cities))
+    if len(city) == 0:
+        abort(404)
+    places = list(map(lambda x: x.to_dict(), city[0].places))
+    return jsonify(places)
+
+
+@app_views.route('/cities/<city_id>/places', methods=['POST'],
+                  strict_slashes=False))
+def add_place(city_id):
+    cities = storage.all("City").values()
+    city = list(filter(lambda x: x.id == city_id, cities))
+    if len(city) == 0:
+        abort(404)
+    if not request.is_json:
+        abort(400, 'Not a JSON')
+    data = request.get_json()
+    if 'user_id' not in data:
+        abort(400, 'Missing user_id')
+    if 'name' not in data:
+        abort(400, 'Missing name')
+    users = storage.all("User").values()
+    user = list(filter(lambda x: x.id == user_id, users))
+    if len(user) == 0:
+        abort(404)
+    new_place = Place()
+    for key, value in data.items():
+        setattr(place, key, value)
+    storage.new(new_place)
+    storage.save()
+    return jsonify(new_place.to_dict()), 201
 
 
 @app_views.route('/places/<place_id>', methods=['GET'])
