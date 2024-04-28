@@ -73,9 +73,9 @@ def update_place(place_id):
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
-    data = request.get_json()
-    if not data:
+    if not request.is_json:
         abort(400, 'Not a JSON')
+    data = request.get_json()
     ignore_keys = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
     for key, value in data.items():
         if key not in ignore_keys:
