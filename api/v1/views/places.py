@@ -24,9 +24,9 @@ def get_places_by_city(city_id):
         city = storage.get(City, city_id)
         if not city:
             abort(404)
-        data = request.get_json()
-        if not data:
+        if not request.is_json:
             abort(400, 'Not a JSON')
+        data = request.get_json()
         if 'user_id' not in data:
             abort(400, 'Missing user_id')
         if 'name' not in data:
