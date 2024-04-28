@@ -21,7 +21,7 @@ def get_places_by_city(city_id):
 
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
-                  strict_slashes=False)
+                 strict_slashes=False)
 def add_place(city_id):
     cities = storage.all("City").values()
     city = list(filter(lambda x: x.id == city_id, cities))
