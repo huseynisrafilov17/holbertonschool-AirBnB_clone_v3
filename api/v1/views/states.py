@@ -4,6 +4,7 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import storage
 from models.state import State
+import json
 
 
 @app_views.route("/states", methods=["GET"], strict_slashes=False)
@@ -44,6 +45,10 @@ def state_add():
     if "name" not in data.keys():
         abort(400, 'Missing name')
     new_state = State(data)
+    for key, value in data.items():
+        if key not in ["id", "created_at", "updated_at"]:
+            setattr(new_state, key, value)
+    storage.new(new_state)
     storage.save()
     return jsonify(new_state.to_dict()), 201
 
@@ -60,6 +65,6 @@ def state_update(state_id):
         data = request.get_json()
         for key, value in data.items():
             if key not in ["id", "created_at", "updated_at"]:
-                state[0].setattr(key, value)
+                setattr(state[0], key, value)
         storage.save()
         return jsonify(state[0].to_dict()), 200
