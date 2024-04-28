@@ -8,7 +8,7 @@ import json
 
 
 @app_views.route("/places/<place_id>/reviews", strict_slashes=False)
-def reviews():
+def reviews(place_id):
     places = storage.all("Place").values()
     place = list(filter(lambda x: x.id == place_id, places))
     if len(place) == 0:
