@@ -57,7 +57,7 @@ class DBStorage:
         c_n = cls.__name__
         obj = objects.get(f"{c_n}.{id}")
         return obj
-    
+
     def count(self, cls=None):
         """Counts instances of a class"""
         if cls is None:
