@@ -55,7 +55,7 @@ def user_add():
 
 
 @app_views.route("/users/<user_id>", methods=["PUT"], strict_slashes=False)
-def state_update(user_id):
+def user_update(user_id):
     users = storage.all("User").values()
     user = list(filter(lambda x: x.id == user_id, users))
     if len(user) == 0:
