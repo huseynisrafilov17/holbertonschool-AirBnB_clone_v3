@@ -34,8 +34,9 @@ def get_places_by_city(city_id):
         user = storage.get(User, data['user_id'])
         if user is None:
             abort(404)
-        data['city_id'] = city_id
-        new_place = Place(**data)
+        new_place = Place()
+        for key, value in data.items():
+            setattr(place, key, value)
         new_place.save()
         return jsonify(new_place.to_dict()), 201
 
