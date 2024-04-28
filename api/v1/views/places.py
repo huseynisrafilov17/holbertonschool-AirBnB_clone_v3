@@ -21,8 +21,9 @@ def get_places_by_city(city_id):
         places = [place.to_dict() for place in city.places]
         return jsonify(places)
     elif request.method == 'POST':
-        city = storage.get(City, city_id)
-        if not city:
+        cities = storage.all("City").values()
+        city = list(filter(lambda x: x.id == city_id, cities))
+        if len(city) == 0:
             abort(404)
         if not request.is_json:
             abort(400, 'Not a JSON')
@@ -31,8 +32,9 @@ def get_places_by_city(city_id):
             abort(400, 'Missing user_id')
         if 'name' not in data:
             abort(400, 'Missing name')
-        user = storage.get(User, data['user_id'])
-        if user is None:
+        users = storage.all("User").values()
+        user = list(filter(lambda x: x.id == user_id, users))
+        if len(user) == 0:
             abort(404)
         new_place = Place()
         for key, value in data.items():
