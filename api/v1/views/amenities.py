@@ -17,7 +17,7 @@ def amenities():
 @app_views.route("/amenities/<amenity_id>", methods=["GET"],
                  strict_slashes=False)
 def amenity(amenity_id):
-    amenities = storage.all("State").values()
+    amenities = storage.all("Amenity").values()
     amenity = list(filter(lambda x: x.id == amenity_id, amenities))
     if len(amenity) == 0:
         abort(404)
@@ -28,7 +28,7 @@ def amenity(amenity_id):
 @app_views.route("/amenities/<amenity_id>", methods=["DELETE"],
                  strict_slashes=False)
 def amenity_delete(amenity_id):
-    amenities = storage.all("State").values()
+    amenities = storage.all("Amenity").values()
     amenity = list(filter(lambda x: x.id == amenity_id, amenities))
     if len(amenity) == 0:
         abort(404)
@@ -57,7 +57,7 @@ def amenity_add():
 @app_views.route("/amenities/<amenity_id>", methods=["PUT"],
                  strict_slashes=False)
 def amenity_update(amenity_id):
-    amenities = storage.all("State").values()
+    amenities = storage.all("Amenity").values()
     amenity = list(filter(lambda x: x.id == amenity_id, amenities))
     if len(amenity) == 0:
         abort(404)
