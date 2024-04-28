@@ -62,7 +62,7 @@ def review_add(place_id):
     new_review.place_id = place_id
     for key, value in data.items():
         if key not in ["id", "created_at", "updated_at"]:
-            setattr(new_state, key, value)
+            setattr(new_review, key, value)
     storage.new(new_review)
     storage.save()
     return jsonify(new_review.to_dict()), 201
