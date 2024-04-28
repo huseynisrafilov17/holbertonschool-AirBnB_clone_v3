@@ -30,15 +30,16 @@ def add_place(city_id):
     if not request.is_json:
         abort(400, 'Not a JSON')
     data = request.get_json()
-    if 'user_id' not in data:
+    if 'user_id' not in data.keys():
         abort(400, 'Missing user_id')
-    if 'name' not in data:
+    if 'name' not in data.keys():
         abort(400, 'Missing name')
     users = storage.all("User").values()
-    user = list(filter(lambda x: x.id == user_id, users))
+    user = list(filter(lambda x: x.id == data["user_id"], users))
     if len(user) == 0:
         abort(404)
     new_place = Place()
+    new_place.city_id = city_id
     for key, value in data.items():
         setattr(new_place, key, value)
     storage.new(new_place)
